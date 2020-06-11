@@ -3,13 +3,13 @@ pipeline {
         label 'Lable1'
     }
     parameters {
-        choice(name: 'action', choices: 'create\ndestroy', description: 'Create/update or destroy the apache-server')
-        string(name: 'workspace', defaultValue : 'apache-server', description: "Name of the workspace")
+        choice(name: 'action', choices: 'Build\nRun', description: 'Build/Run the docker images')
+        string(name: 'container', defaultValue : 'container1', description: "Name of the container")
     }
     stages {
-        stage('checkout') {
+        stage('build') {
             steps {
-                git 'https://github.com/kaza514/terr3.git'
+                git 'https://github.com/Arif-git/docker-pipeline.git'
             }
         }
         stage('TF Plan') {
