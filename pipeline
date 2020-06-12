@@ -12,51 +12,27 @@ pipeline {
                 git 'https://github.com/Arif-git/docker-pipeline.git'
             }
         }
-        stage('TF Plan') {
+        stage('Build Image') {
             when {
-                expression { params.action == 'create' }
+                expression { params.action == 'Build' }
             }
             steps {
                 script {
-                    dir('terraform_apacheSrever') {
+                    
                         sh """
-                        terraform init
-                        terraform workspace new ${params.workspace} || true
-                        terraform workspace select ${params.workspace}
-                        terraform plan 
+                        docker stop demoapp;
+                        docker rm -f demoapp;
+                        docker image rm -f demoapp;
+                        cd /opt/docker;
+                        docker build -t demoapp .
+
+                        
                         """
-                        }
+          
                     }
                 }
         }
-        stage('TF Apply') {
-          when {
-            expression { params.action == 'create' }
-          }
-          steps {
-            script {
-                    dir('terraform_apacheSrever') {
-                        sh """ 
-                        terraform apply -input=false -auto-approve
-                        """
-                        }
-                    }
-                }
-        }
-        stage('TF Destroy') {
-          when {
-            expression { params.action == 'destroy' }
-          }
-          steps {
-            script {
-                    dir('terraform_apacheSrever') {
-                        sh """ 
-                        terraform workspace select ${params.workspace}
-                        terraform destroy -auto-approve
-                        """
-                        }
-                    }
-                }
-        }
+       
+      
     }        
 }
