@@ -25,10 +25,10 @@ pipeline {
                         docker image rm -f demoapp;
                         cd /opt/docker;
                         docker build -t demoapp .
-
+                        echo "image built sucess !!!"
                         
                         """
-                        echo "image built sucess !!!"
+                      
           
                     }
                 }
